@@ -19,7 +19,7 @@ export class ChartComponent implements OnInit {
   width = 100;
   height = 100;
   outerRadius = Math.min(this.width, this.height) / 3;
-  innerRadius = this.outerRadius / 2;
+  innerRadius =  this.outerRadius / 2;
 
   constructor() {
   }
@@ -40,7 +40,7 @@ export class ChartComponent implements OnInit {
       .attr('width', '100%')
       .attr('height', '100%')
       .attr('viewBox', '0 0 ' + this.width + ' ' + this.height)
-      .attr('perserveAspectRatio', 'xMidYMid')
+      .attr('preserveAspectRatio', 'xMidYMid')
       .append('g')
       .attr('transform', 'translate(' + this.width / 2 + ',' + this.height / 2 + ')');
   }
