@@ -19,8 +19,16 @@ export class ChartComponent implements OnInit {
 
   createChart() {
 
+    const data: Value[] = [
+      new Value('Win 2x', 15, '#98abc5'),
+      new Value('Win 3x', 10, '#8a89a6'),
+      new Value('Win 5x', 6, '#7b6888'),
+      new Value('Win 30x', 1, '#6b486b')];
+
     const width = 800;
     const height = 800;
+    const outerRadius = Math.min(width, height) / 3;
+    const innerRadius = outerRadius / 2;
 
     const margin = {
       left: 10,
@@ -40,34 +48,29 @@ export class ChartComponent implements OnInit {
       .append('g')
       .attr('transform', 'translate(' + width / 2 + ',' + height / 2 + ')');
 
-    const circle = svg.append('circle')
-      .attr('cx', 30)
-      .attr('cy', 30)
-      .attr('r', 20);
+    const pie = d3.pie().value((d: {key: string, value: Value}): number => {
+      console.log('D', d);
+      return d.value.value;
+    });
+    console.log('Pie', pie);
 
-    // const radius = Math.min(width, height) / 2 - margin.left;
-    //
-    // const data: Value[] = [new Value('a', 10), new Value('b', 20), new Value('c', 30)];
-    //
-    // // set the color scale
-    // const color = d3.scaleOrdinal()
-    //   .domain(data)
-    //   .range(['#98abc5', '#8a89a6', '#7b6888', '#6b486b', '#a05d56']);
-    //
-    // // Compute the position of each group on the pie:
-    // const pie = d3.pie().value((d: Value): number => d.value);
-    // const dataReady = pie(d3.entries(data));
-    //
-    // // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
-    // svg
-    //   .selectAll('whatever')
-    //   .data(dataReady)
-    //   .enter()
-    //   .append('path')
-    //   .attr('d', d3.arc()
-    //     .innerRadius(0)
-    //     .outerRadius(radius)
-    //   )
-    //   .attr('fill', d => (color(d.data.key)));
+    const dataReady = pie(d3.entries(data));
+    console.log('Data ready', dataReady);
+
+    svg
+      .selectAll('whatever')
+      .data(dataReady)
+      .enter()
+      .append('path')
+      .attr('d', d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius)
+      )
+      .attr('fill', (d: {data: {key: string, value: Value}}): string => {
+        console.log('D', d);
+        console.log('D.data', d.data.value);
+        console.log('D.data.color', d.data.value.color);
+        return d.data.value.color;
+      });
   }
 }
