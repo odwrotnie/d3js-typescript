@@ -39,11 +39,11 @@ export class ChartComponent implements OnInit {
     const infoG = d3.select(`#info`).style('padding', '1em');
     this.pie(gPie);
 
-    const needleWidth = this.innerRadius;
-    const needleOffset = this.innerRadius / 3;
+    const needleWidth = this.innerRadius / 5;
+    const needleOffset = this.innerRadius / 2;
     gGadgets.append('polygon')
       .attr('points', `${-needleWidth},${-this.outerRadius - needleOffset} ${needleWidth},${-this.outerRadius - needleOffset} 0,${-this.innerRadius - needleOffset}`)
-      .style('fill', '#ed6c69');
+      .style('fill', '#ffffff');
 
     infoG.append('text')
       .attr('id', 'state')
