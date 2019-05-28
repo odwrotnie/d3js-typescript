@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
-import {Value} from './value';
+import {Value} from './model/value';
+import {Pie} from './model/pie';
 
 @Component({
   selector: 'app-chart',
@@ -39,28 +40,8 @@ export class ChartComponent implements OnInit {
     const infoG = d3.select(`#info`).style('padding', '1em');
     this.pie(gPie);
 
-    const needleWidth: number = this.innerRadius / 5;
-    const needleOffset: number = this.innerRadius / 2;
-    const needlePoints: Array<{x: number, y: number}> = [{x: - needleWidth, y: - this.outerRadius - needleOffset},
-      {x: needleWidth, y: - this.outerRadius - needleOffset},
-      {x: 0, y: - this.innerRadius - needleOffset}];
-
-    gGadgets.selectAll('polygon')
-      .data([needlePoints])
-      .enter()
-      .append('polygon')
-      //.style('fill', '#ffffff')
-      .attr('points', (data) => {
-        return data.map((d) => {
-          const t = [d.x, d.y].join(',');
-          console.log('T', t);
-          return t;
-        }).join(' ');
-      });
-
-    // gGadgets.append('polygon')
-    //   .attr('points', ` ${needleWidth},${-this.outerRadius - needleOffset} 0,${-this.innerRadius - needleOffset}`)
-    //   .style('fill', '#ffffff');
+    const pie = new Pie(this.data);
+    pie.addNeedle(gGadgets);
 
     infoG.append('text')
       .attr('id', 'state')
