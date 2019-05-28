@@ -25,69 +25,61 @@ export class ChartComponent implements OnInit {
   constructor() {
   }
 
-  transformRotate(angle: number): string {
-    return `translate(${this.width / 2}, ${this.height / 2}) rotate(${angle})`;
-  }
-
   ngOnInit() {
-    const svg = this.prepareSVG('pie');
-    const gPie = svg
+    const g = this
+      .prepareSVG('pie')
       .append('g')
-      .attr('transform', this.transformRotate(0));
-    const gGadgets = svg
-      .append('g')
-      .attr('transform', this.transformRotate(0));
+      .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
+    const gPie = g
+      .append('g');
+    const gGadgets = g
+      .append('g');
     const infoG = d3.select(`#info`).style('padding', '1em');
-    this.pie(gPie);
 
-    const pie = new Pie(this.data);
+    const pie = new Pie(this.width, this.height, this.data);
+    pie.addPie(gPie);
     pie.addNeedle(gGadgets);
+    pie.addDebug(infoG);
 
-    infoG.append('text')
-      .attr('id', 'state')
-      .attr('text-anchor', 'end')
-      .attr('alignment-baseline', 'middle')
-      .attr('x', 0).attr('y', 0)
-      .style('fill', '#a62020')
-      .text('?');
+    pie.rotate(200);
 
-    let state = 0;
-    const desiredAngle = 290;
-    const timeLimit = 3000;
-    const t = d3.timer((duration: number) => {
-
-      const angle = duration / 10;
-      const angle360 = angle % 360;
-
-      if (state <= 0 && (duration <= timeLimit || angle360 > desiredAngle)) {
-        state = 0;
-      } else if (state <= 1 && angle360 <= desiredAngle) {
-        state = 1;
-      } else {
-        state = 2;
-      }
-
-      console.log('State', state);
-      d3.select('#state').text(`S:${state} T:${Math.round(duration)} A:${Math.round(angle360)}`);
-
-      switch (state) {
-        case 0:
-          gPie.attr('transform', this.transformRotate(angle));
-          break;
-        case 1:
-          gPie.attr('transform', this.transformRotate(angle));
-          break;
-        case 2:
-          gPie.attr('transform', this.transformRotate(desiredAngle));
-          t.stop();
-          break;
-      }
-
-      // g.transition()
-      //   .duration(100)
-      //   .attr('transform', this.transformRotate(180));
-
-    });
+    // let state = 0;
+    // const desiredAngle = 290;
+    // const timeLimit = 3000;
+    // const t = d3.timer((duration: number) => {
+    //
+    //   const angle = duration / 10;
+    //   const angle360 = angle % 360;
+    //
+    //   if (state <= 0 && (duration <= timeLimit || angle360 > desiredAngle)) {
+    //     state = 0;
+    //   } else if (state <= 1 && angle360 <= desiredAngle) {
+    //     state = 1;
+    //   } else {
+    //     state = 2;
+    //   }
+    //
+    //   console.log('State', state);
+    //   pie.getDebug().text(`S:${state} T:${Math.round(duration)} A:${Math.round(angle360)}`);
+    //
+    //   switch (state) {
+    //     case 0:
+    //       gPie.attr('transform', this.transformRotate(angle));
+    //       break;
+    //     case 1:
+    //       gPie.attr('transform', this.transformRotate(angle));
+    //       break;
+    //     case 2:
+    //       gPie.attr('transform', this.transformRotate(desiredAngle));
+    //       t.stop();
+    //       break;
+    //   }
+    //
+    //   // g.transition()
+    //   //   .duration(100)
+    //   //   .attr('transform', this.transformRotate(180));
+    //
+    // });
   }
 
   private prepareSVG(id: string) {
@@ -98,26 +90,5 @@ export class ChartComponent implements OnInit {
       .attr('viewBox', '0 0 ' + this.width + ' ' + this.height)
       .attr('preserveAspectRatio', 'xMidYMid');
 
-  }
-
-  private pie(g) {
-    const pie = d3.pie().value((d: { key: string, value: Value }): number => {
-      return d.value.value;
-    });
-    console.log('Pie', pie);
-
-    const dataReady = pie(d3.entries(this.data));
-    console.log('Data ready', dataReady);
-
-    g.selectAll('whatever')
-      .data(dataReady)
-      .enter()
-      .append('path')
-      .attr('d', d3.arc()
-        .innerRadius(this.innerRadius)
-        .outerRadius(this.outerRadius))
-      .attr('fill', (d: { data: { key: string, value: Value } }): string => {
-        return d.data.value.color;
-      });
   }
 }
