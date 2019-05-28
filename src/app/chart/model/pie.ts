@@ -5,7 +5,6 @@ export class Pie {
 
   gPie;
   gNeedle;
-  gDebug;
 
   width = 1000;
   height = 1000;
@@ -24,21 +23,6 @@ export class Pie {
     this.width = width;
     this.height = height;
     this.values = values;
-  }
-
-  addDebug(g) {
-    this.gDebug = g;
-    this.gDebug.append('text')
-      .attr('id', 'state')
-      .attr('text-anchor', 'end')
-      .attr('alignment-baseline', 'middle')
-      .attr('x', 0).attr('y', 0)
-      .style('fill', '#a62020')
-      .text('DEBUG');
-  }
-
-  getDebug() {
-    return d3.select('#state');
   }
 
   addNeedle(g) {
@@ -81,13 +65,14 @@ export class Pie {
 
   rotate(angle: number, seconds: number) {
     function rotTween() {
-      let i = d3.interpolate(0, angle);
+      const i = d3.interpolate(0, angle);
       return (t) => {
         return `rotate(${i(t)},0,0)`;
       };
     }
     this.gPie
       .transition()
+      .ease(d3.easeCubic)
       .duration(seconds * 1000)
       .attrTween('transform', rotTween);
   }

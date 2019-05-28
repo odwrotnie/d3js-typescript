@@ -39,47 +39,8 @@ export class ChartComponent implements OnInit {
     const pie = new Pie(this.width, this.height, this.data);
     pie.addPie(gPie);
     pie.addNeedle(gGadgets);
-    pie.addDebug(infoG);
 
-    pie.rotate(1000, 3);
-
-    // let state = 0;
-    // const desiredAngle = 290;
-    // const timeLimit = 3000;
-    // const t = d3.timer((duration: number) => {
-    //
-    //   const angle = duration / 10;
-    //   const angle360 = angle % 360;
-    //
-    //   if (state <= 0 && (duration <= timeLimit || angle360 > desiredAngle)) {
-    //     state = 0;
-    //   } else if (state <= 1 && angle360 <= desiredAngle) {
-    //     state = 1;
-    //   } else {
-    //     state = 2;
-    //   }
-    //
-    //   console.log('State', state);
-    //   pie.getDebug().text(`S:${state} T:${Math.round(duration)} A:${Math.round(angle360)}`);
-    //
-    //   switch (state) {
-    //     case 0:
-    //       gPie.attr('transform', this.transformRotate(angle));
-    //       break;
-    //     case 1:
-    //       gPie.attr('transform', this.transformRotate(angle));
-    //       break;
-    //     case 2:
-    //       gPie.attr('transform', this.transformRotate(desiredAngle));
-    //       t.stop();
-    //       break;
-    //   }
-    //
-    //   // g.transition()
-    //   //   .duration(100)
-    //   //   .attr('transform', this.transformRotate(180));
-    //
-    // });
+    pie.rotate(3600, 7);
   }
 
   private prepareSVG(id: string) {
