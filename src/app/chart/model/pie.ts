@@ -79,7 +79,16 @@ export class Pie {
       });
   }
 
-  rotate(angle: number) {
-    this.gPie.attr('transform', `rotate(${angle})`);
+  rotate(angle: number, seconds: number) {
+    function rotTween() {
+      let i = d3.interpolate(0, angle);
+      return (t) => {
+        return `rotate(${i(t)},0,0)`;
+      };
+    }
+    this.gPie
+      .transition()
+      .duration(seconds * 1000)
+      .attrTween('transform', rotTween);
   }
 }

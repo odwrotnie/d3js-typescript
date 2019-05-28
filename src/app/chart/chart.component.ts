@@ -41,7 +41,7 @@ export class ChartComponent implements OnInit {
     pie.addNeedle(gGadgets);
     pie.addDebug(infoG);
 
-    pie.rotate(200);
+    pie.rotate(1000, 3);
 
     // let state = 0;
     // const desiredAngle = 290;
