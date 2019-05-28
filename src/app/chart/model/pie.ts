@@ -13,7 +13,7 @@ export class Pie {
   outerRadius = Math.min(this.width, this.height) / 3;
   innerRadius =  this.outerRadius / 2;
   needleWidth: number = this.innerRadius / 5;
-  needleOffset: number = this.innerRadius / 2;
+  needleOffset: number = this.innerRadius / 5;
   needlePoints: Array<{x: number, y: number}> = [
     {x: - this.needleWidth, y: - this.outerRadius - this.needleOffset},
     {x: this.needleWidth, y: - this.outerRadius - this.needleOffset},
@@ -31,12 +31,10 @@ export class Pie {
       .data([this.needlePoints])
       .enter()
       .append('polygon')
-      .style('fill', '#ffffff')
+      .style('fill', 'rgba(0,0,0,0.5)')
       .attr('points', (data) => {
         return data.map((d) => {
-          const t = [d.x, d.y].join(',');
-          console.log('T', t);
-          return t;
+          return [d.x, d.y].join(', ');
         }).join(' ');
       });
   }
@@ -46,11 +44,7 @@ export class Pie {
     const pie = d3.pie().value((d: { key: string, value: Value }): number => {
       return d.value.value;
     });
-    console.log('Pie', pie);
-
     const dataReady = pie(d3.entries(this.values));
-    console.log('Data ready', dataReady);
-
     this.gPie.selectAll('whatever')
       .data(dataReady)
       .enter()

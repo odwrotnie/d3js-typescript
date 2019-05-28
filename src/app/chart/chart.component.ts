@@ -11,10 +11,10 @@ import {Pie} from './model/pie';
 export class ChartComponent implements OnInit {
 
   data: Value[] = [
-    new Value('Win 2× / 47%', 15, '#D6A6F1'),
-    new Value('Win 3× / 31%', 10, '#992EFB'),
+    new Value('Win 30× / 3%', 1, '#E51DE6'),
     new Value('Win 5× / 19%', 6, '#7519B5'),
-    new Value('Win 30× / 3%', 1, '#E51DE6')
+    new Value('Win 3× / 31%', 10, '#992EFB'),
+    new Value('Win 2× / 47%', 15, '#D6A6F1')
   ];
 
   width = 1000;
