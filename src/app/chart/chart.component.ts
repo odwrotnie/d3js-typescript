@@ -30,17 +30,9 @@ export class ChartComponent implements OnInit {
       .prepareSVG('pie')
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
-    const gPie = g
-      .append('g');
-    const gGadgets = g
-      .append('g');
-    const infoG = d3.select(`#info`).style('padding', '1em');
 
-    const pie = new Pie(this.width, this.height, this.data);
-    pie.addPie(gPie);
-    pie.addNeedle(gGadgets);
-
-    pie.rotate(3600, 7);
+    const pie = new Pie(g, this.width, this.height, this.data);
+    pie.spin(Math.random());
   }
 
   private prepareSVG(id: string) {
