@@ -17,8 +17,8 @@ export class Pie {
 
   outerRadius = Math.min(this.width, this.height) / 3;
   innerRadius =  this.outerRadius / 2;
-  needleWidth: number = this.innerRadius / 5;
-  needleOffset: number = this.innerRadius / 5;
+  needleWidth: number = this.innerRadius / 2;
+  needleOffset: number = this.innerRadius / 2;
   needlePoints: Array<{x: number, y: number}> = [
     {x: - this.needleWidth, y: - this.outerRadius - this.needleOffset},
     {x: this.needleWidth, y: - this.outerRadius - this.needleOffset},
@@ -94,7 +94,7 @@ export class Pie {
       .data([this.needlePoints])
       .enter()
       .append('polygon')
-      .style('fill', 'rgba(0,0,0,0.5)')
+      .style('fill', '#7ec2c6')
       .attr('points', (data) => {
         return data.map((d) => {
           return [d.x, d.y].join(', ');

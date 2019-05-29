@@ -30,7 +30,6 @@ export class ChartComponent implements OnInit {
       .prepareSVG('pie')
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
-
     const pie = new Pie(g, this.width, this.height, this.data);
     pie.spin(Math.random());
   }
@@ -42,6 +41,5 @@ export class ChartComponent implements OnInit {
       .attr('height', '100%')
       .attr('viewBox', '0 0 ' + this.width + ' ' + this.height)
       .attr('preserveAspectRatio', 'xMidYMid');
-
   }
 }
