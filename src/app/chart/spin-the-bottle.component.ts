@@ -5,16 +5,14 @@ import {Pie} from './model/pie';
 
 @Component({
   selector: 'app-chart',
-  templateUrl: './chart.component.html',
-  styleUrls: ['./chart.component.sass']
+  templateUrl: './spin-the-bottle.component.html',
+  styleUrls: ['./spin-the-bottle.component.sass']
 })
-export class ChartComponent implements OnInit {
+export class SpinTheBottleComponent implements OnInit {
 
   data: Value[] = [
-    new Value('Win 30× / 3%', 1, '#E51DE6'),
-    new Value('Win 5× / 19%', 6, '#7519B5'),
-    new Value('Win 3× / 31%', 10, '#992EFB'),
-    new Value('Win 2× / 47%', 15, '#D6A6F1')
+    new Value('Me', 3, '#E51DE6'),
+    new Value('Others', 5, '#7519B5')
   ];
 
   width = 1000;

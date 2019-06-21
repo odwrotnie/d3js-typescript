@@ -1,6 +1,5 @@
 import * as d3 from 'd3';
 import {Value} from './value';
-import {forEach} from '@angular/router/src/utils/collection';
 
 export class Pie {
 
@@ -94,7 +93,7 @@ export class Pie {
       .data([this.needlePoints])
       .enter()
       .append('polygon')
-      .style('fill', '#7ec2c6')
+      //.style('fill', '#7ec2c6')
       .attr('points', (data) => {
         return data.map((d) => {
           return [d.x, d.y].join(', ');
@@ -109,7 +108,7 @@ export class Pie {
         return `rotate(${i(t)},0,0)`;
       };
     }
-    this.gPie
+    this.gNeedle
       .transition()
       .ease(d3.easeCubic)
       .duration(seconds * 1000)
@@ -123,7 +122,7 @@ export class Pie {
     console.log('Random number', random);
     console.log('Random value', value);
     console.log('Angle', angle);
-    this.rotate(-anglePlusRotation, this.spinSeconds);
+    this.rotate(anglePlusRotation, this.spinSeconds);
     this.addCircle(value.color, this.spinSeconds);
   }
 }
