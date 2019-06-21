@@ -16,8 +16,8 @@ export class Pie {
 
   outerRadius = Math.min(this.width, this.height) / 3;
   innerRadius =  this.outerRadius / 2;
-  needleWidth: number = this.innerRadius / 2;
-  needleOffset: number = this.innerRadius / 2;
+  needleWidth: number = this.innerRadius / 10;
+  needleOffset: number = this.innerRadius / 5;
   needlePoints: Array<{x: number, y: number}> = [
     {x: - this.needleWidth, y: - this.outerRadius - this.needleOffset},
     {x: this.needleWidth, y: - this.outerRadius - this.needleOffset},
@@ -69,23 +69,9 @@ export class Pie {
       .attr('d', d3.arc()
         .innerRadius(this.innerRadius)
         .outerRadius(this.outerRadius))
-      .attr('fill', (d: { data: { key: string, value: Value } }): string => {
-        return d.data.value.color;
+      .attr('class', (d: { data: { key: string, value: Value } }): string => {
+        return `pie ${d.data.value.clazz}`;
       });
-  }
-
-  private addCircle(color: string, seconds: number) {
-    this.gCircle.append('circle')
-      .transition()
-      .ease(d3.easeCubic)
-      .duration(seconds * 1000)
-      .transition()
-      .ease(d3.easeCubic)
-      .duration(300)
-      .attr('cx', 0)
-      .attr('cy', 0)
-      .attr('r', this.outerRadius)
-      .attr('fill', color);
   }
 
   private addNeedle() {
@@ -93,7 +79,7 @@ export class Pie {
       .data([this.needlePoints])
       .enter()
       .append('polygon')
-      //.style('fill', '#7ec2c6')
+      .attr('class', 'needle')
       .attr('points', (data) => {
         return data.map((d) => {
           return [d.x, d.y].join(', ');
@@ -123,6 +109,5 @@ export class Pie {
     console.log('Random value', value);
     console.log('Angle', angle);
     this.rotate(anglePlusRotation, this.spinSeconds);
-    this.addCircle(value.color, this.spinSeconds);
   }
 }

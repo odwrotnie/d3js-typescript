@@ -11,8 +11,8 @@ import {Pie} from './model/pie';
 export class SpinTheBottleComponent implements OnInit {
 
   data: Value[] = [
-    new Value('Me', 3, '#E51DE6'),
-    new Value('Others', 5, '#7519B5')
+    new Value('Me', 3, 'you'),
+    new Value('Others', 5, 'others')
   ];
 
   width = 1000;
