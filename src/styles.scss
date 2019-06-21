@@ -2,8 +2,12 @@
 @import "assets/css/grid";
 @import "assets/css/styles";
 
+body {
+  background: darkblue;
+}
+
 .needle {
-  fill: darkorange;
+  fill: beige;
 }
 
 .pie.you {
@@ -11,5 +15,10 @@
 }
 
 .pie.others {
-  fill: darkmagenta;
+  fill: blueviolet;
 }
+
+.pie.time {
+  fill: beige;
+}
+

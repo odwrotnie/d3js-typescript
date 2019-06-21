@@ -4,24 +4,27 @@ import {Value} from './value';
 export class Pie {
 
   gPie;
+  gTimePie;
   gCircle;
   gNeedle;
 
-  width = 1000;
-  height = 1000;
+  scale = 100;
+  width = this.scale * 10;
+  height = this.scale * 10;
   spinRotations = 5;
   spinSeconds = 5;
   values: Value[];
   valuesSum: number;
 
   outerRadius = Math.min(this.width, this.height) / 3;
-  innerRadius =  this.outerRadius / 2;
-  needleWidth: number = this.innerRadius / 10;
-  needleOffset: number = this.innerRadius / 5;
+  innerRadius =  this.outerRadius - this.scale;
+  needleWidth: number = this.scale / 5;
+  needleHeight: number = this.scale / 3;
+  needleOffset: number = this.innerRadius + this.scale;
   needlePoints: Array<{x: number, y: number}> = [
-    {x: - this.needleWidth, y: - this.outerRadius - this.needleOffset},
-    {x: this.needleWidth, y: - this.outerRadius - this.needleOffset},
-    {x: 0, y: - this.innerRadius - this.needleOffset}];
+    {x: - this.needleWidth, y: - this.needleOffset - this.needleHeight},
+    {x: this.needleWidth, y: - this.needleOffset - this.needleHeight},
+    {x: 0, y: - this.needleOffset}];
 
   constructor(g, width: number, height: number, values: Value[]) {
     this.width = width;
@@ -30,9 +33,11 @@ export class Pie {
     this.valuesSum = this.values.reduce((prev, v) => prev + v.value, 0);
     this.gCircle = g.append('g');
     this.gPie = g.append('g');
+    this.gTimePie = g.append('g');
     this.gNeedle = g.append('g');
     this.addPie();
     this.addNeedle();
+    this.addTimePie();
     console.log('Value sum', this.valuesSum);
   }
 
@@ -85,6 +90,15 @@ export class Pie {
           return [d.x, d.y].join(', ');
         }).join(' ');
       });
+  }
+
+  private addTimePie() {
+    const arc = d3.arc()
+      .innerRadius(this.innerRadius * 0.95)
+      .outerRadius(this.innerRadius * 0.90);
+    this.gPie.append('path')
+      .attr('class', 'pie time')
+      .attr('d', arc({startAngle: 0, endAngle: Math.PI * 1.7}));
   }
 
   private rotate(angle: number, seconds: number) {
