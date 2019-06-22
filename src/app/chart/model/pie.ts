@@ -7,6 +7,7 @@ export class Pie {
   gTimePie;
   gCircle;
   gNeedle;
+  gTextValue;
 
   scale = 100;
   width = this.scale * 10;
@@ -35,9 +36,11 @@ export class Pie {
     this.gPie = g.append('g');
     this.gTimePie = g.append('g');
     this.gNeedle = g.append('g');
+    this.gTextValue = g.append('g');
     this.addPie();
     this.addNeedle();
     this.addTimePie();
+    this.addTextValue(358.7);
     console.log('Value sum', this.valuesSum);
   }
 
@@ -95,10 +98,55 @@ export class Pie {
   private addTimePie() {
     const arc = d3.arc()
       .innerRadius(this.innerRadius * 0.95)
-      .outerRadius(this.innerRadius * 0.90);
-    this.gPie.append('path')
+      .outerRadius(this.innerRadius * 0.90)
+      .startAngle(0)
+      .endAngle(2 * Math.PI / 9);
+    this.gTimePie.append('path')
       .attr('class', 'pie time')
-      .attr('d', arc({startAngle: 0, endAngle: Math.PI * 1.7}));
+      .attr('d', arc);
+  }
+
+  private addTextValue(value: number) {
+    this.gTextValue
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('alignment-baseline', 'middle')
+      .text(`$${d3.format('.2f')(value)}`);
+  }
+
+  public startTimePie(seconds: number) {
+
+    // function rotTween() {
+    //   const angle = d3.interpolate(0, 2 * Math.PI);
+    //   return (t) => {
+    //     return d3.arc()
+    //       .innerRadius(this.innerRadius * 0.95)
+    //       .outerRadius(this.innerRadius * angle(t))
+    //       .startAngle(0)
+    //       .endAngle(angle(t));
+    //   };
+    // }
+
+    const arc = d3.arc()
+      .innerRadius(this.innerRadius * 0.95)
+      .outerRadius(this.innerRadius * 0.90)
+      .startAngle(0);
+      //.endAngle(2 * Math.PI);
+
+    function arcTween(newAngle) {
+      return d => {
+        const interpolate = d3.interpolate(0, newAngle);
+        return t => {
+          d.endAngle = interpolate(t);
+          return arc(d);
+        };
+      };
+    }
+
+    this.gTimePie
+      .transition()
+      .duration(seconds)
+      .attrTween('d', arcTween(2 * Math.PI));
   }
 
   private rotate(angle: number, seconds: number) {
