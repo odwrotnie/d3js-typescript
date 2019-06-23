@@ -27,7 +27,7 @@ export class SpinTheBottleComponent implements OnInit {
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
     console.log({mainG: g})
-    const pie = new Pie(g, this.width, this.height, this.data);
+    const pie = new Pie(g, this.data);
     pie.spin(Math.random());
     //pie.startTimePie(10);
   }

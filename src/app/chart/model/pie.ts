@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import {Value} from './value';
+import {Text} from './text';
 
 export class Pie {
 
@@ -7,7 +8,6 @@ export class Pie {
   gTimePie;
   gCircle;
   gNeedle;
-  gTextValue;
 
   betValue = 3;
   myBetsCount = 2;
@@ -31,20 +31,25 @@ export class Pie {
     {x: this.needleWidth, y: - this.needleOffset - this.needleHeight},
     {x: 0, y: - this.needleOffset}];
 
-  constructor(g, width: number, height: number, values: Value[]) {
-    this.width = width;
-    this.height = height;
+  valueText: Text;
+
+  constructor(g, values: Value[]) {
+    // this.width = width;
+    // this.height = height;
     this.values = values;
     this.valuesSum = this.values.reduce((prev, v) => prev + v.value, 0);
     this.gCircle = g.append('g');
     this.gPie = g.append('g');
     this.gTimePie = g.append('g');
     this.gNeedle = g.append('g');
-    this.gTextValue = g.append('g');
+
     this.addPie();
     this.addNeedle();
     this.addTimePie();
-    this.addGameValueText();
+
+    this.valueText = new Text(g, `$${d3.format('.2f')(0)}`);
+    this.valueText.updateText('updated');
+
     console.log('Value sum', this.valuesSum);
   }
 
@@ -124,14 +129,6 @@ export class Pie {
     this.gTimePie.append('path')
       .attr('class', 'pie time')
       .attr('d', this.arc(2 * Math.PI / 9));
-  }
-
-  private addGameValueText() {
-    this.gTextValue
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('alignment-baseline', 'middle')
-      .text(`$${d3.format('.2f')(this.gameValue())}`);
   }
 
   public startTimePie(seconds: number) {
