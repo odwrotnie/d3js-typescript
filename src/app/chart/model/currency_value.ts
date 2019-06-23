@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 export class CurrencyValue {
 
   g;
+  textSelection;
   currentValue: number;
   currency: string;
 
@@ -10,8 +11,8 @@ export class CurrencyValue {
     this.g = g.append('g');
     this.currentValue = value;
     this.currency = currency;
-    this.g
-      .append('text')
+    this.textSelection = this.g.append('text');
+    this.textSelection
       .attr('text-anchor', 'middle')
       .attr('alignment-baseline', 'middle')
       .text(CurrencyValue.valueFormat(this.currentValue, this.currency));
@@ -29,10 +30,9 @@ export class CurrencyValue {
       .ease(d3.easeCubic)
       .duration(700)
       .tween('currency_value', () => {
-        const that = this.g.select('text');
         const i = d3.interpolateNumber(oldValue, this.currentValue);
         return t => {
-          that.text(CurrencyValue.valueFormat(i(t), this.currency));
+          this.textSelection.text(CurrencyValue.valueFormat(i(t), this.currency));
         };
       }
     );

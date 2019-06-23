@@ -10,8 +10,8 @@ export class Pie {
   gNeedle;
 
   betValue = 3;
-  myBetsCount = 2;
-  othersBetsCount = 3;
+  myBetsCount = 0;
+  othersBetsCount = 0;
 
   currencyValue: CurrencyValue;
 
@@ -48,7 +48,6 @@ export class Pie {
     this.addTimePie();
 
     this.currencyValue = new CurrencyValue(g, 0, '$');
-    this.currencyValue.updateValue(1000);
 
     console.log('Value sum', this.valuesSum);
   }
