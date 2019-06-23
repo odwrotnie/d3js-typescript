@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import {Value} from './value';
-import {Text} from './text';
+import {CurrencyValue} from './currency_value';
 
 export class Pie {
 
@@ -12,6 +12,8 @@ export class Pie {
   betValue = 3;
   myBetsCount = 2;
   othersBetsCount = 3;
+
+  currencyValue: CurrencyValue;
 
   scale = 100;
   width = this.scale * 10;
@@ -31,8 +33,6 @@ export class Pie {
     {x: this.needleWidth, y: - this.needleOffset - this.needleHeight},
     {x: 0, y: - this.needleOffset}];
 
-  valueText: Text;
-
   constructor(g, values: Value[]) {
     // this.width = width;
     // this.height = height;
@@ -47,10 +47,20 @@ export class Pie {
     this.addNeedle();
     this.addTimePie();
 
-    this.valueText = new Text(g, `$${d3.format('.2f')(0)}`);
-    this.valueText.updateText('updated');
+    this.currencyValue = new CurrencyValue(g, 0, '$');
+    this.currencyValue.updateValue(1000);
 
     console.log('Value sum', this.valuesSum);
+  }
+
+  placeMyBets(count: number) {
+    this.myBetsCount = this.myBetsCount + count;
+    this.currencyValue.updateValue(this.gameValue());
+  }
+
+  placeOthersBets(count: number) {
+    this.othersBetsCount = this.othersBetsCount + count;
+    this.currencyValue.updateValue(this.gameValue());
   }
 
   private betsCount() {
@@ -167,6 +177,10 @@ export class Pie {
       .ease(d3.easeCubic)
       .duration(seconds * 1000)
       .attrTween('transform', rotTween);
+  }
+
+  addMyValue(value: number) {
+    this.currencyValue
   }
 
   spin(random: number) {

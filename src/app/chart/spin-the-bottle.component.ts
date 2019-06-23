@@ -15,21 +15,22 @@ export class SpinTheBottleComponent implements OnInit {
     new Value('Others', 5, 'others')
   ];
 
+  g;
+  pie: Pie;
   width = 1000;
   height = 1000;
 
   constructor() {
+
   }
 
   ngOnInit() {
-    const g = this
+    this.g = this
       .prepareSVG('pie')
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
-    console.log({mainG: g})
-    const pie = new Pie(g, this.data);
-    pie.spin(Math.random());
-    //pie.startTimePie(10);
+    this.pie = new Pie(this.g, this.data);
+    this.pie.spin(Math.random());
   }
 
   private prepareSVG(id: string) {
@@ -41,8 +42,14 @@ export class SpinTheBottleComponent implements OnInit {
       .attr('preserveAspectRatio', 'xMidYMid');
   }
 
-  placeBet(value: number) {
-    console.log(`Bet placed: ${value}`);
+  placeMyBet(count: number) {
+    console.log(`Placing my bets: ${count}`);
+    this.pie.placeMyBets(count);
+  }
+
+  placeOthersBet(count: number) {
+    console.log(`Placing others bets: ${count}`);
+    this.pie.placeOthersBets(count);
   }
 
   startTimer() {
