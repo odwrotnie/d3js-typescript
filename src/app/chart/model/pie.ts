@@ -9,6 +9,10 @@ export class Pie {
   gNeedle;
   gTextValue;
 
+  betValue = 3;
+  myBetsCount = 2;
+  othersBetsCount = 3;
+
   scale = 100;
   width = this.scale * 10;
   height = this.scale * 10;
@@ -40,8 +44,16 @@ export class Pie {
     this.addPie();
     this.addNeedle();
     this.addTimePie();
-    this.addTextValue(358.7);
+    this.addGameValueText();
     console.log('Value sum', this.valuesSum);
+  }
+
+  private betsCount() {
+    return this.myBetsCount + this.othersBetsCount;
+  }
+
+  private gameValue() {
+    return this.betValue * (this.betsCount());
   }
 
   private valueBasedOnNumber(random: number): Value {
@@ -95,50 +107,47 @@ export class Pie {
       });
   }
 
-  private addTimePie() {
-    const arc = d3.arc()
+  private arc(endAngle: number) {
+    return d3.arc()
       .innerRadius(this.innerRadius * 0.95)
       .outerRadius(this.innerRadius * 0.90)
       .startAngle(0)
-      .endAngle(2 * Math.PI / 9);
-    this.gTimePie.append('path')
-      .attr('class', 'pie time')
-      .attr('d', arc);
+      .endAngle(endAngle);
   }
 
-  private addTextValue(value: number) {
+  private addTimePie() {
+    // const arc = d3.arc()
+    //   .innerRadius(this.innerRadius * 0.95)
+    //   .outerRadius(this.innerRadius * 0.90)
+    //   .startAngle(0)
+    //   .endAngle(2 * Math.PI / 9);
+    this.gTimePie.append('path')
+      .attr('class', 'pie time')
+      .attr('d', this.arc(2 * Math.PI / 9));
+  }
+
+  private addGameValueText() {
     this.gTextValue
       .append('text')
       .attr('text-anchor', 'middle')
       .attr('alignment-baseline', 'middle')
-      .text(`$${d3.format('.2f')(value)}`);
+      .text(`$${d3.format('.2f')(this.gameValue())}`);
   }
 
   public startTimePie(seconds: number) {
 
-    // function rotTween() {
-    //   const angle = d3.interpolate(0, 2 * Math.PI);
-    //   return (t) => {
-    //     return d3.arc()
-    //       .innerRadius(this.innerRadius * 0.95)
-    //       .outerRadius(this.innerRadius * angle(t))
-    //       .startAngle(0)
-    //       .endAngle(angle(t));
-    //   };
-    // }
+    function rotTween() {
+      const angle = d3.interpolate(0, 2 * Math.PI);
+      return (t) => {
+        return this.arc(angle);
+      };
+    }
 
-    const arc = d3.arc()
-      .innerRadius(this.innerRadius * 0.95)
-      .outerRadius(this.innerRadius * 0.90)
-      .startAngle(0);
-      //.endAngle(2 * Math.PI);
-
-    function arcTween(newAngle) {
+    function arcTween() {
       return d => {
-        const interpolate = d3.interpolate(0, newAngle);
+        const angle = d3.interpolate(0, 2 * Math.PI);
         return t => {
-          d.endAngle = interpolate(t);
-          return arc(d);
+          return this.arc(angle);
         };
       };
     }
@@ -146,7 +155,7 @@ export class Pie {
     this.gTimePie
       .transition()
       .duration(seconds)
-      .attrTween('d', arcTween(2 * Math.PI));
+      .attrTween('d', arcTween());
   }
 
   private rotate(angle: number, seconds: number) {
