@@ -16,20 +16,19 @@ export class TimePie {
       .startAngle(0);
     this.path = this.g.append('path')
       .attr('class', 'pie time')
-      .datum({endAngle: 3})
+      .datum({endAngle: 2 * Math.PI})
       .attr('d', this.arc);
   }
 
   public startTimer(seconds: number) {
 
     const self = this;
+    const i = d3.interpolate(2 * Math.PI, 0);
 
-    function arcTween(newAngle) {
+    function arcTween() {
       return (d) => {
-        const i = d3.interpolate(0, newAngle);
         return (t) => {
           d.endAngle = i(t);
-          console.log('t', t, i(t), d);
           return self.arc(d);
         };
       };
@@ -37,7 +36,8 @@ export class TimePie {
 
     this.path
       .transition()
-      .duration(10000)
-      .attrTween('d', arcTween(2 * Math.PI));
+      .ease(d3.easeLinear)
+      .duration(seconds * 1000)
+      .attrTween('d', arcTween());
   }
 }

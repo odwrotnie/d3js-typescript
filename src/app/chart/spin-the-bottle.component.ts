@@ -15,6 +15,7 @@ export class SpinTheBottleComponent implements OnInit {
     new Value('Others', 5, 'others')
   ];
 
+  svg;
   g;
   pie: Pie;
   width = 1000;
@@ -25,17 +26,16 @@ export class SpinTheBottleComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.g = this
-      .prepareSVG('pie')
+    this.svg = this
+      .prepareSVG('pie');
+    this.g = this.svg
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
     this.pie = new Pie(this.g, this.data);
-    this.pie.spin(Math.random());
   }
 
   private prepareSVG(id: string) {
-    return d3.select(`#${id}`)
-      .append('svg')
+    return d3.select('svg')
       .attr('width', '100%')
       .attr('height', '100%')
       .attr('viewBox', '0 0 ' + this.width + ' ' + this.height)
@@ -55,5 +55,9 @@ export class SpinTheBottleComponent implements OnInit {
   startTimer(seconds: number) {
     console.log(`Starting timer for ${seconds} seconds`);
     this.pie.startTimer(seconds);
+  }
+
+  spinNeedle() {
+    this.pie.spin(Math.random());
   }
 }
