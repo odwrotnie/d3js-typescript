@@ -10,15 +10,16 @@ export class SpinTheBottle {
 
   g;
 
-  pie: Pie;
-  needle: Needle;
-  timePie: TimePie;
-  gameValue: GameValue;
+  pieG; pie: Pie;
 
-  gYouOdds;
-  youOdds: Odds;
-  gOthersOdds;
-  othersOdds: Odds;
+  needleG; needle: Needle;
+
+  timePieG; timePie: TimePie;
+
+  gameValueG; gameValue: GameValue;
+
+  youOddsG; youOdds: Odds;
+  otherOddsG; othersOdds: Odds;
 
   scale = 100;
   betValue = 3;
@@ -37,22 +38,29 @@ export class SpinTheBottle {
 
   constructor(g) {
     this.g = g;
-    this.pie = new Pie(g, this.data, this.innerRadius, this.outerRadius);
 
-    this.needle = new Needle(g, this.outerRadius, this.data);
-    this.timePie = new TimePie(g, this.innerRadius);
-    this.gameValue = new GameValue(g, 0, '$');
+    this.pieG = this.g.append('g');
+    this.pie = new Pie(this.pieG, this.data, this.innerRadius, this.outerRadius);
 
-    this.gYouOdds = g.append('g')
+    this.needleG = g.append('g');
+    this.needle = new Needle(this.needleG, this.outerRadius, this.data);
+
+    this.timePieG = g.append('g');
+    this.timePie = new TimePie(this.timePieG, this.innerRadius);
+
+    this.gameValueG = g.append('g');
+    this.gameValue = new GameValue(this.gameValueG, 0, '$');
+
+    this.youOddsG = g.append('g')
       .attr('class', 'you')
       .attr('transform', `translate(${this.outerRadius}, ${-this.outerRadius})`);
-    this.youOdds = new Odds(this.gYouOdds,
+    this.youOdds = new Odds(this.youOddsG,
       0,
       'end');
-    this.gOthersOdds = g.append('g')
+    this.otherOddsG = g.append('g')
       .attr('class', 'others')
       .attr('transform', `translate(${-this.outerRadius}, ${-this.outerRadius})`);
-    this.othersOdds = new Odds(this.gOthersOdds,
+    this.othersOdds = new Odds(this.otherOddsG,
       0,
       'start');
   }

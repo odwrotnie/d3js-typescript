@@ -13,7 +13,7 @@ export class Pie {
 
   constructor(g, values: Value[], innerRadius: number, outerRadius: number) {
 
-    this.g = g.append('g');
+    this.g = g;
 
     this.values = values;
 

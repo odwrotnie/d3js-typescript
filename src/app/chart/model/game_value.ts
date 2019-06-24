@@ -8,7 +8,7 @@ export class GameValue {
   currency: string;
 
   constructor(g, value: number, currency: string) {
-    this.g = g.append('g');
+    this.g = g;
     this.currentValue = value;
     this.currency = currency;
     this.textSelection = this.g.append('text').attr('class', 'game-value');

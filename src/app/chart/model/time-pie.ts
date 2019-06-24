@@ -8,7 +8,7 @@ export class TimePie {
   path;
 
   constructor(g, radius: number) {
-    this.g = g.append('g');
+    this.g = g;
     this.radius = radius;
     this.arc = d3.arc()
       .innerRadius(this.radius * 0.9)

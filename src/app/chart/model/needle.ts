@@ -16,7 +16,7 @@ export class Needle {
   spinSeconds = 5;
 
   constructor(g, radius: number, values: Value[]) {
-    this.g = g.append('g');
+    this.g = g;
     this.radius = radius;
     this.needleWidth = this.radius / 13;
     this.needleHeight = this.radius / 10;
