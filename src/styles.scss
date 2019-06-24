@@ -11,21 +11,27 @@ body {
   fill: beige;
 }
 
-.pie.you {
-  fill: cornflowerblue;
-}
-
-.pie.others {
-  fill: blueviolet;
-}
-
 .pie.time {
   fill: beige;
 }
 
-text {
+text.game-value {
   fill: beige;
   font-family: "Helvetica Neue", "Helvetica", sans-serif;
   font-weight: bold;
   font-size: 5em;
+}
+
+text.odds {
+  font-family: "Helvetica Neue", "Helvetica", sans-serif;
+  font-weight: bold;
+  font-size: 2em;
+}
+
+.you {
+  fill: cornflowerblue;
+}
+
+.others {
+  fill: blueviolet;
 }

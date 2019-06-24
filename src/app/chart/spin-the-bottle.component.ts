@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
 import {Value} from './model/value';
 import {Pie} from './model/pie';
+import {SpinTheBottle} from './model/spin-the-bottle';
 
 @Component({
   selector: 'app-chart',
@@ -10,14 +11,10 @@ import {Pie} from './model/pie';
 })
 export class SpinTheBottleComponent implements OnInit {
 
-  data: Value[] = [
-    new Value('Me', 3, 'you'),
-    new Value('Others', 5, 'others')
-  ];
-
   svg;
   g;
-  pie: Pie;
+
+  spinTheBottle: SpinTheBottle;
   width = 1000;
   height = 1000;
 
@@ -31,7 +28,7 @@ export class SpinTheBottleComponent implements OnInit {
     this.g = this.svg
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
-    this.pie = new Pie(this.g, this.data);
+    this.spinTheBottle = new SpinTheBottle(this.g);
   }
 
   private prepareSVG(id: string) {
@@ -44,20 +41,20 @@ export class SpinTheBottleComponent implements OnInit {
 
   placeMyBet(count: number) {
     console.log(`Placing my bets: ${count}`);
-    this.pie.placeMyBets(count);
+    this.spinTheBottle.placeYouBets(count);
   }
 
   placeOthersBet(count: number) {
     console.log(`Placing others bets: ${count}`);
-    this.pie.placeOthersBets(count);
+    this.spinTheBottle.placeOthersBets(count);
   }
 
   startTimer(seconds: number) {
     console.log(`Starting timer for ${seconds} seconds`);
-    this.pie.startTimer(seconds);
+    this.spinTheBottle.startTimer(seconds);
   }
 
   spinNeedle() {
-    this.pie.spin(Math.random());
+    this.spinTheBottle.spin(Math.random());
   }
 }
