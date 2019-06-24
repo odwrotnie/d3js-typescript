@@ -1,6 +1,7 @@
 import * as d3 from 'd3';
 import {Value} from './value';
 import {CurrencyValue} from './currency_value';
+import {TimePie} from './time-pie';
 
 export class Pie {
 
@@ -13,6 +14,7 @@ export class Pie {
   myBetsCount = 0;
   othersBetsCount = 0;
 
+  timePie: TimePie;
   currencyValue: CurrencyValue;
 
   scale = 100;
@@ -45,8 +47,8 @@ export class Pie {
 
     this.addPie();
     this.addNeedle();
-    this.addTimePie();
 
+    this.timePie = new TimePie(g, this.innerRadius);
     this.currencyValue = new CurrencyValue(g, 0, '$');
 
     console.log('Value sum', this.valuesSum);
@@ -121,52 +123,9 @@ export class Pie {
       });
   }
 
-  private arc(endAngle: number) {
-    return d3.arc()
-      .innerRadius(this.innerRadius * 0.95)
-      .outerRadius(this.innerRadius * 0.90)
-      .startAngle(0)
-      .endAngle(endAngle);
-  }
-
-  private addTimePie() {
-    // const arc = d3.arc()
-    //   .innerRadius(this.innerRadius * 0.95)
-    //   .outerRadius(this.innerRadius * 0.90)
-    //   .startAngle(0)
-    //   .endAngle(2 * Math.PI / 9);
-    this.gTimePie.append('path')
-      .attr('class', 'pie time')
-      .attr('d', this.arc(2 * Math.PI / 9));
-  }
-
-  public startTimePie(seconds: number) {
-
-    function rotTween() {
-      const angle = d3.interpolate(0, 2 * Math.PI);
-      return (t) => {
-        return this.arc(angle);
-      };
-    }
-
-    function arcTween() {
-      return d => {
-        const angle = d3.interpolate(0, 2 * Math.PI);
-        return t => {
-          return this.arc(angle);
-        };
-      };
-    }
-
-    this.gTimePie
-      .transition()
-      .duration(seconds)
-      .attrTween('d', arcTween());
-  }
-
   private rotate(angle: number, seconds: number) {
+    const i = d3.interpolate(0, angle);
     function rotTween() {
-      const i = d3.interpolate(0, angle);
       return (t) => {
         return `rotate(${i(t)},0,0)`;
       };
@@ -178,10 +137,6 @@ export class Pie {
       .attrTween('transform', rotTween);
   }
 
-  addMyValue(value: number) {
-    this.currencyValue
-  }
-
   spin(random: number) {
     const value = this.valueBasedOnNumber(random);
     const angle = random * 360;
@@ -190,5 +145,9 @@ export class Pie {
     console.log('Random value', value);
     console.log('Angle', angle);
     this.rotate(anglePlusRotation, this.spinSeconds);
+  }
+
+  startTimer(seconds: number) {
+    this.timePie.startTimer(seconds);
   }
 }

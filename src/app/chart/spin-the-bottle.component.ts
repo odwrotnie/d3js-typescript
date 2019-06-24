@@ -52,7 +52,8 @@ export class SpinTheBottleComponent implements OnInit {
     this.pie.placeOthersBets(count);
   }
 
-  startTimer() {
-    console.log(`Starting timer`);
+  startTimer(seconds: number) {
+    console.log(`Starting timer for ${seconds} seconds`);
+    this.pie.startTimer(seconds);
   }
 }
