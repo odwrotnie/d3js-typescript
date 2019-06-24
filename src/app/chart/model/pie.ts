@@ -1,13 +1,12 @@
 import * as d3 from 'd3';
 import {Value} from './value';
-import {GameValue} from './game_value';
-import {TimePie} from './time-pie';
-import {Needle} from './needle';
-import {Odds} from './odds';
 
 export class Pie {
 
   g;
+  pie;
+  arc;
+  piePath;
 
   values: Value[];
 
@@ -15,21 +14,34 @@ export class Pie {
 
     this.g = g;
 
-    this.values = values;
+    this.arc = d3.arc()
+      .innerRadius(innerRadius)
+      .outerRadius(outerRadius);
 
-    const pie = d3.pie().value((d: { key: string, value: Value }): number => {
+    this.pie = d3.pie().value((d: { key: string, value: Value }): number => {
       return d.value.value;
     }).sort(null);
-    const dataReady = pie(d3.entries(this.values));
-    this.g.selectAll('whatever')
-      .data(dataReady)
+
+    this.setValues(values);
+  }
+
+  private dataReady() {
+    return this.pie(d3.entries(this.values));
+  }
+
+  setValues(values: Value[]) {
+    this.values = values;
+    this.piePath = this.g.selectAll('whatever')
+      .data(this.dataReady())
       .enter()
-      .append('path')
-      .attr('d', d3.arc()
-        .innerRadius(innerRadius)
-        .outerRadius(outerRadius))
+      .append('path');
+    this.piePath.attr('d', this.arc)
       .attr('class', (d: { data: { key: string, value: Value } }): string => {
         return `pie ${d.data.value.clazz}`;
       });
+  }
+
+  updateValues(values: Value[]) {
+    this.setValues(values);
   }
 }

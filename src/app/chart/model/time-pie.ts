@@ -5,7 +5,7 @@ export class TimePie {
   g;
   radius: number;
   arc;
-  path;
+  arcPath;
 
   constructor(g, radius: number) {
     this.g = g;
@@ -14,7 +14,7 @@ export class TimePie {
       .innerRadius(this.radius * 0.9)
       .outerRadius(this.radius)
       .startAngle(0);
-    this.path = this.g.append('path')
+    this.arcPath = this.g.append('path')
       .attr('class', 'pie time')
       .datum({endAngle: 2 * Math.PI})
       .attr('d', this.arc);
@@ -34,7 +34,7 @@ export class TimePie {
       };
     }
 
-    this.path
+    this.arcPath
       .transition()
       .ease(d3.easeLinear)
       .duration(seconds * 1000)
