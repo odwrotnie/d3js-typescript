@@ -14,6 +14,8 @@ export class Pie {
 
     this.g = g;
 
+    this.values = values;
+
     this.arc = d3.arc()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);
