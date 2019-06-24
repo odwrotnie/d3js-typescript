@@ -32,7 +32,8 @@ export class SpinTheBottle {
   innerRadius =  this.outerRadius - this.scale;
 
   data: Value[] = [
-    new Value('Me', 3, 'you'),
+    new Value('You', 3, 'you'),
+    new Value('Potential', 1, 'potential'),
     new Value('Others', 5, 'others')
   ];
 
