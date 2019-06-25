@@ -3,6 +3,8 @@
 @import "assets/css/styles";
 
 body {
+  font-family: "Helvetica Neue", "Helvetica", sans-serif;
+  color: beige;
   background: darkblue;
   padding: 1em;
 }
@@ -23,7 +25,6 @@ text.game-value {
 }
 
 text.odds {
-  font-family: "Helvetica Neue", "Helvetica", sans-serif;
   font-weight: bold;
   font-size: 1.5em;
 }
@@ -38,4 +39,8 @@ text.odds {
 
 .others {
   fill: blueviolet;
+}
+
+.bar {
+  fill: rgba(237, 108, 105, 0.51);
 }

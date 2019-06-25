@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
-import {Value} from './model/value';
-import {Pie} from './model/pie';
-import {SpinTheBottle} from './model/spin-the-bottle';
+import {Value} from '../model/value';
+import {Pie} from '../model/pie';
+import {SpinTheBottle} from '../model/spin-the-bottle';
 
 @Component({
-  selector: 'app-chart',
+  selector: 'app-spin-the-bottle',
   templateUrl: './spin-the-bottle.component.html',
   styleUrls: ['./spin-the-bottle.component.sass']
 })
@@ -24,7 +24,7 @@ export class SpinTheBottleComponent implements OnInit {
 
   ngOnInit() {
     this.svg = this
-      .prepareSVG('pie');
+      .prepareSVG('spin-the-bottle');
     this.g = this.svg
       .append('g')
       .attr('transform', `translate(${this.width / 2}, ${this.height / 2})`);
@@ -32,7 +32,7 @@ export class SpinTheBottleComponent implements OnInit {
   }
 
   private prepareSVG(id: string) {
-    return d3.select('svg')
+    return d3.select(`svg#${id}`)
       .attr('width', '100%')
       .attr('height', '100%')
       .attr('viewBox', '0 0 ' + this.width + ' ' + this.height)
