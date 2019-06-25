@@ -8,13 +8,15 @@ export class Pie {
   arc;
   piePath;
 
-  values: Value[];
+  values: Value[] = [
+    new Value('You', 3, 'you'),
+    new Value('Potential', 1, 'potential'),
+    new Value('Others', 5, 'others')
+  ];
 
-  constructor(g, values: Value[], innerRadius: number, outerRadius: number) {
+  constructor(g, innerRadius: number, outerRadius: number) {
 
     this.g = g;
-
-    this.values = values;
 
     this.arc = d3.arc()
       .innerRadius(innerRadius)
@@ -24,11 +26,15 @@ export class Pie {
       return d.value.value;
     }).sort(null);
 
-    this.setValues(values);
+    this.setValues(this.values);
   }
 
   private dataReady() {
     return this.pie(d3.entries(this.values));
+  }
+
+  valuesSum() {
+    return this.values.reduce((prev, v) => prev + v.value, 0);
   }
 
   setValues(values: Value[]) {

@@ -31,20 +31,14 @@ export class SpinTheBottle {
   outerRadius = Math.min(this.width, this.height) * 0.4;
   innerRadius =  this.outerRadius - this.scale;
 
-  data: Value[] = [
-    new Value('You', 3, 'you'),
-    new Value('Potential', 1, 'potential'),
-    new Value('Others', 5, 'others')
-  ];
-
   constructor(g) {
     this.g = g;
 
     this.pieG = this.g.append('g');
-    this.pie = new Pie(this.pieG, this.data, this.innerRadius, this.outerRadius);
+    this.pie = new Pie(this.pieG, this.innerRadius, this.outerRadius);
 
     this.needleG = g.append('g');
-    this.needle = new Needle(this.needleG, this.outerRadius, this.data);
+    this.needle = new Needle(this.needleG, this.outerRadius, this.pie);
 
     this.timePieG = g.append('g');
     this.timePie = new TimePie(this.timePieG, this.innerRadius);

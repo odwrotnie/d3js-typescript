@@ -1,5 +1,6 @@
 import * as d3 from 'd3';
 import {Value} from './value';
+import {Pie} from './pie';
 
 export class Needle {
 
@@ -9,13 +10,12 @@ export class Needle {
   needleHeight: number;
   needlePoints: Array<{x: number, y: number}>;
 
-  values: Value[];
-  valuesSum: number;
+  pie: Pie;
 
   spinRotations = 5;
   spinSeconds = 5;
 
-  constructor(g, radius: number, values: Value[]) {
+  constructor(g, radius: number, pie: Pie) {
     this.g = g;
     this.radius = radius;
     this.needleWidth = this.radius / 13;
@@ -34,8 +34,7 @@ export class Needle {
           return [d.x, d.y].join(', ');
         }).join(' ');
       });
-    this.values = values;
-    this.valuesSum = values.reduce((prev, v) => prev + v.value, 0);
+    this.pie = pie;
   }
 
   private valueBasedOnNumber(random: number): Value {
@@ -43,10 +42,10 @@ export class Needle {
     if (random >= 1) { throw new Error(`Random number (${random}) should be < 1`); }
     if (random < 0) { throw new Error(`Random number (${random}) should be >= 0`); }
 
-    const treshold = this.valuesSum * random;
+    const treshold = this.pie.valuesSum() * random;
     console.log('Treshold', treshold);
 
-    const res: {v: Value, sum: number} = this.values.reduce((x, value) => {
+    const res: {v: Value, sum: number} = this.pie.values.reduce((x, value) => {
       const newSum = x.sum + value.value;
       if (treshold >= newSum) {
         return {v: null, sum: newSum};
