@@ -52,6 +52,7 @@ export class SpinTheBottle {
     this.youOdds = new Odds(this.youOddsG,
       0,
       'end');
+
     this.otherOddsG = g.append('g')
       .attr('class', 'others')
       .attr('transform', `translate(${-this.outerRadius}, ${-this.outerRadius})`);
@@ -71,9 +72,7 @@ export class SpinTheBottle {
   placeYouBets(count: number) {
     this.youBetsCount = this.youBetsCount + count;
     console.log('Place you bets', this.youBetsCount, 'all', this.betsCount());
-    this.pie.updateValues([
-      new Value('Me', 13, 'you')
-    ]);
+    this.pie.addYouOdds(count);
     this.gameValue.updateValue(this.betsValue());
     this.youOdds.updateValue(100 * this.youBetsCount / this.betsCount());
     this.othersOdds.updateValue(100 * this.othersBetsCount / this.betsCount());
@@ -82,9 +81,7 @@ export class SpinTheBottle {
   placeOthersBets(count: number) {
     this.othersBetsCount = this.othersBetsCount + count;
     console.log('Place other bets', this.othersBetsCount, 'all', this.betsCount());
-    this.pie.updateValues([
-      new Value('Others', 15, 'others')
-    ]);
+    this.pie.addOthersOdds(count);
     this.gameValue.updateValue(this.betsValue());
     this.youOdds.updateValue(100 * this.youBetsCount / this.betsCount());
     this.othersOdds.updateValue(100 * this.othersBetsCount / this.betsCount());

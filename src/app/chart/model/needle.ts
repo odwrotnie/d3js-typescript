@@ -45,7 +45,7 @@ export class Needle {
     const treshold = this.pie.valuesSum() * random;
     console.log('Treshold', treshold);
 
-    const res: {v: Value, sum: number} = this.pie.values.reduce((x, value) => {
+    const res: {v: Value, sum: number} = this.pie.valuesList().reduce((x, value) => {
       const newSum = x.sum + value.value;
       if (treshold >= newSum) {
         return {v: null, sum: newSum};

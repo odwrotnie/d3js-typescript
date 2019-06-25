@@ -3,16 +3,18 @@ import {Value} from './value';
 
 export class Pie {
 
+  YOU_KEY = 'You';
+  POTENTIAL_KEY = 'Potential';
+  OTHERS_KEY = 'Others';
+
+  youValue = new Value(this.YOU_KEY, 0, 'you');
+  potentialValue = new Value(this.POTENTIAL_KEY, 0, 'potential');
+  othersValue = new Value(this.OTHERS_KEY, 0, 'others');
+
   g;
   pie;
   arc;
   piePath;
-
-  values: Value[] = [
-    new Value('You', 3, 'you'),
-    new Value('Potential', 1, 'potential'),
-    new Value('Others', 5, 'others')
-  ];
 
   constructor(g, innerRadius: number, outerRadius: number) {
 
@@ -26,19 +28,25 @@ export class Pie {
       return d.value.value;
     }).sort(null);
 
-    this.setValues(this.values);
+    this.updateValues();
   }
 
   private dataReady() {
-    return this.pie(d3.entries(this.values));
+    return this.pie(d3.entries(this.valuesList()));
+  }
+
+  valuesList(): Value[] {
+    return [this.youValue,
+      this.potentialValue,
+      this.othersValue];
   }
 
   valuesSum() {
-    return this.values.reduce((prev, v) => prev + v.value, 0);
+    const list: Value[] = this.valuesList();
+    return list.reduce((prev, v) => prev + v.value, 0);
   }
 
-  setValues(values: Value[]) {
-    this.values = values;
+  updateValues() {
     this.piePath = this.g.selectAll('whatever')
       .data(this.dataReady())
       .enter()
@@ -49,7 +57,13 @@ export class Pie {
       });
   }
 
-  updateValues(values: Value[]) {
-    this.setValues(values);
+  addYouOdds(count: number) {
+    this.youValue.addToValue(count);
+    this.updateValues();
+  }
+
+  addOthersOdds(count: number) {
+    this.othersValue.addToValue(count);
+    this.updateValues();
   }
 }
