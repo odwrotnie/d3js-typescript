@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
 import * as d3 from 'd3';
-import {SpinTheBottle} from '../model/spin-the-bottle';
+
+import { Component, OnInit } from '@angular/core';
 import {Histogram} from '../model/histogram';
 import {Value} from '../model/value';
 

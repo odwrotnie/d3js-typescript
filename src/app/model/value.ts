@@ -10,11 +10,15 @@ export class Value {
     this.clazz = clazz;
   }
 
-  updateValue(value: number) {
+  valueOf(): number {
+    return this.value;
+  }
+
+  updateValue(value: number): void {
     this.value = value;
   }
 
-  addToValue(value: number) {
+  addToValue(value: number): void {
     this.value = this.value + value;
   }
 

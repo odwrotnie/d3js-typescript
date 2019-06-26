@@ -7,12 +7,12 @@ export class Pie {
   POTENTIAL_KEY = 'Potential';
   OTHERS_KEY = 'Others';
 
-  youValue = new Value(this.YOU_KEY, 0, 'you');
+  youValue = new Value(this.YOU_KEY, 1, 'you');
   potentialValue = new Value(this.POTENTIAL_KEY, 0, 'potential');
-  othersValue = new Value(this.OTHERS_KEY, 0, 'others');
+  othersValue = new Value(this.OTHERS_KEY, 1, 'others');
 
-  g;
-  pie;
+  g: d3.Selection<any, any, any, any>;
+  pie: d3.Pie<any, Value>;
   arc;
   piePath;
 
@@ -24,15 +24,15 @@ export class Pie {
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);
 
-    this.pie = d3.pie().value((d: { key: string, value: Value }): number => {
-      return d.value.value;
+    this.pie = d3.pie<Value>().value((d, i, data) => {
+      return d.value;
     }).sort(null);
 
     this.updateValues();
   }
 
-  private dataReady() {
-    return this.pie(d3.entries(this.valuesList()));
+  private dataReady(): d3.PieArcDatum<Value>[] {
+    return this.pie(this.valuesList());
   }
 
   valuesList(): Value[] {
@@ -47,14 +47,14 @@ export class Pie {
   }
 
   updateValues() {
-    this.piePath = this.g.selectAll('whatever')
+    this.piePath = this.g.selectAll('arc')
       .data(this.dataReady())
       .enter()
       .append('path');
     this.piePath.attr('d', this.arc)
-      .attr('class', (d: { data: { key: string, value: Value } }): string => {
-        return `pie ${d.data.value.clazz}`;
-      });
+      .attr('class', (d => {
+        return `pie ${d.data.clazz}`;
+      }));
   }
 
   addYouOdds(count: number) {

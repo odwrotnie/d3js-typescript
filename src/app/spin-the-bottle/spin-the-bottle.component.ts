@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
-import {Value} from '../model/value';
-import {Pie} from '../model/pie';
 import {SpinTheBottle} from '../model/spin-the-bottle';
 
 @Component({
@@ -11,8 +9,8 @@ import {SpinTheBottle} from '../model/spin-the-bottle';
 })
 export class SpinTheBottleComponent implements OnInit {
 
-  svg;
-  g;
+  svg: d3.Selection<d3.BaseType, {}, HTMLElement, any>;
+  g: d3.Selection<d3.BaseType, {}, HTMLElement, any>;
 
   spinTheBottle: SpinTheBottle;
   width = 1000;
