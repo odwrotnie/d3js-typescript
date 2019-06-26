@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
 import * as d3 from 'd3';
+
+import {Component, OnInit} from '@angular/core';
 import {SpinTheBottle} from '../model/spin-the-bottle';
 
 @Component({

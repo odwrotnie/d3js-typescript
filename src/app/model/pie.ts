@@ -1,5 +1,7 @@
 import * as d3 from 'd3';
+
 import {Value} from './value';
+import {BaseType, PieArcDatum} from 'd3';
 
 export class Pie {
 
@@ -8,19 +10,19 @@ export class Pie {
   OTHERS_KEY = 'Others';
 
   youValue = new Value(this.YOU_KEY, 1, 'you');
-  potentialValue = new Value(this.POTENTIAL_KEY, 0, 'potential');
+  potentialValue = new Value(this.POTENTIAL_KEY, 1, 'potential');
   othersValue = new Value(this.OTHERS_KEY, 1, 'others');
 
-  g: d3.Selection<any, any, any, any>;
+  g: d3.Selection<d3.BaseType, Value, HTMLElement, Value>;
   pie: d3.Pie<any, Value>;
-  arc;
-  piePath;
+  arc: d3.Arc<any, PieArcDatum<Value>>;
+  piePath: d3.Selection<SVGPathElement, PieArcDatum<Value>, BaseType, Value>;
 
-  constructor(g, innerRadius: number, outerRadius: number) {
+  constructor(g: d3.Selection<d3.BaseType, Value, HTMLElement, Value>, innerRadius: number, outerRadius: number) {
 
     this.g = g;
 
-    this.arc = d3.arc()
+    this.arc = d3.arc<PieArcDatum<Value>>()
       .innerRadius(innerRadius)
       .outerRadius(outerRadius);
 
@@ -36,9 +38,11 @@ export class Pie {
   }
 
   valuesList(): Value[] {
-    return [this.youValue,
+    const list = [this.youValue,
       this.potentialValue,
       this.othersValue];
+    console.table(list);
+    return list;
   }
 
   valuesSum() {
