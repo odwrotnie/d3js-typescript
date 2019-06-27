@@ -3,17 +3,17 @@ import {Value} from './value';
 
 export class Histogram {
 
-  g;
-  histogramG;
-  x;
-  y;
+  g: d3.Selection<d3.BaseType, Value, HTMLElement, Value>;
+  histogramG: d3.Selection<d3.BaseType, Value, HTMLElement, Value>;
+  x: d3.ScaleBand<string>;
+  y: d3.ScaleLinear<number, number>;
 
   width: number;
   height: number;
 
   values: Value[];
 
-  margin = {top: 20, right: 20, bottom: 30, left: 40};
+  margin = {top: 20, right: 20, bottom: 20, left: 20};
 
   constructor(g, width: number, height: number, values: Value[]) {
 
