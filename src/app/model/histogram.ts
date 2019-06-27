@@ -3,7 +3,6 @@ import {Value} from './value';
 
 export class Histogram {
 
-  g: d3.Selection<d3.BaseType, Value, HTMLElement, Value>;
   histogramG: d3.Selection<d3.BaseType, Value, HTMLElement, Value>;
   x: d3.ScaleBand<string>;
   y: d3.ScaleLinear<number, number>;
@@ -17,7 +16,6 @@ export class Histogram {
 
   constructor(g: d3.Selection<d3.BaseType, Value, HTMLElement, Value>, width: number, height: number, values: Value[]) {
 
-    this.g = g;
     this.histogramG = g.append('g')
       .attr('transform', `translate(${this.margin.left}, ${-this.margin.top})`);
     this.width = width;
@@ -25,32 +23,33 @@ export class Histogram {
 
     this.values = values;
 
-    this.addBottomAxis(width, values, height);
-
-    this.addLeftAxis(height, values);
+    this.addBottomAxis(values, width, height);
+    this.addLeftAxis(values, height);
 
     this.updateValues();
   }
 
-  private addBottomAxis(width: number, values: Value[], height: number) {
+  private addBottomAxis(values: Value[], width: number, height: number) {
     this.x = d3.scaleBand()
       .range([0, width - this.margin.left - this.margin.right])
       .padding(0.1).round(true);
     this.x.domain(values.map(v => {
       return v.key;
     }));
-    this.histogramG.append('g')
+    this.histogramG
+      .append('g')
       .attr('transform', `translate(0, ${height})`)
       .call(d3.axisBottom(this.x));
   }
 
-  private addLeftAxis(height: number, values: Value[]) {
+  private addLeftAxis(values: Value[], height: number) {
     this.y = d3.scaleLinear()
       .range([height, 0]);
     this.y.domain([0, d3.max(values, v => {
       return v.value;
     })]);
-    this.histogramG.append('g')
+    this.histogramG
+      .append('g')
       .call(d3.axisLeft(this.y));
   }
 
