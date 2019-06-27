@@ -23,9 +23,9 @@ export class HistogramComponent implements OnInit {
   }
 
   values: Value[] = [
-    new Value('Andrzej', 3, 'v'),
-    new Value('Beatka', 5, 'v'),
-    new Value('Czarek', 8, 'v'),
+    new Value('A', 3, 'v'),
+    new Value('B', 5, 'v'),
+    new Value('C', 8, 'v'),
     new Value('D', 7, 'v'),
     new Value('E', 9, 'v'),
     new Value('F', 1, 'v'),

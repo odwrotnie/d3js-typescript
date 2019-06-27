@@ -44,12 +44,13 @@ export class Histogram {
 
   private addLeftAxis(values: Value[], height: number) {
     this.y = d3.scaleLinear()
-      .range([height, 0]);
+      .range([height - this.margin.top - this.margin.bottom, 0]);
     this.y.domain([0, d3.max(values, v => {
       return v.value;
     })]);
     this.histogramG
       .append('g')
+      .attr('transform', `translate(0, ${this.margin.top})`)
       .call(d3.axisLeft(this.y));
   }
 
