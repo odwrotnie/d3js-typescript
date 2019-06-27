@@ -15,7 +15,7 @@ export class Histogram {
 
   margin = {top: 20, right: 20, bottom: 20, left: 20};
 
-  constructor(g, width: number, height: number, values: Value[]) {
+  constructor(g: d3.Selection<d3.BaseType, Value, HTMLElement, Value>, width: number, height: number, values: Value[]) {
 
     this.g = g;
     this.histogramG = g.append('g')
@@ -25,27 +25,37 @@ export class Histogram {
 
     this.values = values;
 
-    this.x = d3.scaleBand().range([0, width - this.margin.left - this.margin.right]).padding(0.1).round(true);
-    this.x.domain(values.map(v => {
-      return v.key;
-    }));
+    this.addBottomAxis(width, values, height);
 
-    this.y = d3.scaleLinear().range([height, 0]);
-    this.y.domain([0, d3.max(values, v => {
-      return v.value;
-    })]);
-
-    this.histogramG.append('g')
-      .attr('transform', `translate(0, ${height - this.margin.bottom})`)
-      .call(d3.axisBottom(this.x));
-    this.histogramG.append('g')
-      .attr('transform', `translate(0, ${-this.margin.bottom})`)
-      .call(d3.axisLeft(this.y));
+    this.addLeftAxis(height, values);
 
     this.updateValues();
   }
 
+  private addBottomAxis(width: number, values: Value[], height: number) {
+    this.x = d3.scaleBand()
+      .range([0, width - this.margin.left - this.margin.right])
+      .padding(0.1).round(true);
+    this.x.domain(values.map(v => {
+      return v.key;
+    }));
+    this.histogramG.append('g')
+      .attr('transform', `translate(0, ${height})`)
+      .call(d3.axisBottom(this.x));
+  }
+
+  private addLeftAxis(height: number, values: Value[]) {
+    this.y = d3.scaleLinear()
+      .range([height, 0]);
+    this.y.domain([0, d3.max(values, v => {
+      return v.value;
+    })]);
+    this.histogramG.append('g')
+      .call(d3.axisLeft(this.y));
+  }
+
   updateValues() {
+    console.table(this.values);
     this.histogramG.selectAll('bar')
       .data(this.values)
       .enter().append('rect')
